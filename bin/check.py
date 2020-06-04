@@ -66,7 +66,7 @@ c = Check()
 while True:
     if c.count_original() < 1 and c.check_checked < 1:
         time.sleep(setting.TIME_CHECK)
-    elif c.count_original() >= 1 or c.count_checked() < setting.PROXY_MIN:
+    elif c.count_original() >= 1 and c.count_checked() < setting.PROXY_MIN:
         c.check_original()
         time.sleep(setting.TIME_CHECK)
     else:

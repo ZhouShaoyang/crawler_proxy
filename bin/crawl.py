@@ -26,8 +26,8 @@ class Crawl():
         self.__66ip()
         self.__89ip()
         self.__kuaidaili()
-        self.__xicidaili()
         self.__xiladaili()
+        # self.__xicidaili()
 
     def __setter(self, ips, website):
         try:
@@ -113,8 +113,34 @@ class Crawl():
                 proxy.append({'http': f'https://{str(i[0])}:{str(i[1])}', 'https': f'https://{str(i[0])}:{str(i[1])}'})
             return proxy
         website = 'https://www.kuaidaili.com/'
-        urls = ['https://www.kuaidaili.com/free/inha/%d/' % i for i in range(1, 21)] + \
-               ['https://www.kuaidaili.com/free/inha/%d/' % i for i in range(1, 21)]
+        urls = ['https://www.kuaidaili.com/free/inha/%d/' % i for i in range(1, 101)] + \
+               ['https://www.kuaidaili.com/free/inha/%d/' % i for i in range(1, 101)]
+        proxys = []
+        for url in urls:
+            try:
+                response = requests.get(url, headers=self.headers)
+                time.sleep(self.sleep)
+                proxy = parser(response.text)
+                proxys += proxy
+            except Exception as error:
+                setting.logging.error(f'[ERROR] [{website}] - CAUSE: {error}')
+        self.__setter(proxys, website)
+        setting.logging.info(f'[SUCCESS] [{website}]')
+
+    def __xiladaili(self):
+        def parser(response):
+            proxy = []
+            soup = BeautifulSoup(response, 'html.parser')
+            ip_ports = [ip.find_all('td')[0].text for ip in soup.find('table', attrs={'class': 'fl-table'}).find('tbody').find_all('tr')]
+            for ip_port in ip_ports:
+                proxy.append({'http': f'http://{str(ip_port)}', 'https': f'http://{str(ip_port)}'})
+                proxy.append({'http': f'https://{str(ip_port)}', 'https': f'https://{str(ip_port)}'})
+            return proxy
+        website = 'http://www.xiladaili.com/'
+        urls = ['http://www.xiladaili.com/putong/%d/' % i for i in range(1, 101)] + \
+               ['http://www.xiladaili.com/gaoni/%d/' % i for i in range(1, 101)] + \
+               ['http://www.xiladaili.com/http/%d/' % i for i in range(1, 101)] + \
+               ['http://www.xiladaili.com/https/%d/' % i for i in range(1, 101)]
         proxys = []
         for url in urls:
             try:
@@ -139,10 +165,10 @@ class Crawl():
                 proxy.append({'http': f'https://{str(i[0])}:{str(i[1])}', 'https': f'https://{str(i[0])}:{str(i[1])}'})
             return proxy
         website = 'https://www.xicidaili.com/'
-        urls = ['https://www.xicidaili.com/wt/%d/' % i for i in range(1, 21)] + \
-               ['https://www.xicidaili.com/wn/%d/' % i for i in range(1, 21)] + \
-               ['https://www.xicidaili.com/nt/%d/' % i for i in range(1, 21)] + \
-               ['https://www.xicidaili.com/nn/%d/' % i for i in range(1, 21)]
+        urls = ['https://www.xicidaili.com/wt/%d/' % i for i in range(1, 11)] + \
+               ['https://www.xicidaili.com/wn/%d/' % i for i in range(1, 11)] + \
+               ['https://www.xicidaili.com/nt/%d/' % i for i in range(1, 11)] + \
+               ['https://www.xicidaili.com/nn/%d/' % i for i in range(1, 11)]
         proxys = []
         for url in urls:
             try:
@@ -155,32 +181,6 @@ class Crawl():
         self.__setter(proxys, website)
         setting.logging.info(f'[SUCCESS] [{website}]')
 
-    def __xiladaili(self):
-        def parser(response):
-            proxy = []
-            soup = BeautifulSoup(response, 'html.parser')
-            ip_ports = [ip.find_all('td')[0].text for ip in soup.find('table', attrs={'class': 'fl-table'}).find('tbody').find_all('tr')]
-            for ip_port in ip_ports:
-                proxy.append({'http': f'http://{str(ip_port)}', 'https': f'http://{str(ip_port)}'})
-                proxy.append({'http': f'https://{str(ip_port)}', 'https': f'https://{str(ip_port)}'})
-            return proxy
-        website = 'http://www.xiladaili.com/'
-        urls = ['http://www.xiladaili.com/putong/%d/' % i for i in range(1, 21)] + \
-               ['http://www.xiladaili.com/gaoni/%d/' % i for i in range(1, 21)] + \
-               ['http://www.xiladaili.com/http/%d/' % i for i in range(1, 21)] + \
-               ['http://www.xiladaili.com/https/%d/' % i for i in range(1, 21)]
-        proxys = []
-        for url in urls:
-            try:
-                response = requests.get(url, headers=self.headers)
-                time.sleep(self.sleep)
-                proxy = parser(response.text)
-                proxys += proxy
-            except Exception as error:
-                setting.logging.error(f'[ERROR] [{website}] - CAUSE: {error}')
-        self.__setter(proxys, website)
-        setting.logging.info(f'[SUCCESS] [{website}]')
-    
 
 c = Crawl()
 while True:
