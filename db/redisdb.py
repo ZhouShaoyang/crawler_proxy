@@ -39,40 +39,20 @@ class RedisConnect():
     def hash_count_checked(self):
         return self.redisdb.hlen(name=self.name_checked)
 
-    def hash_getall_original(self, count=None):
+    def hash_get_original(self, count=None):
         ips = []
         for key, value in self.redisdb.hgetall(name=self.name_original).items():
             ips.append(json.loads(key))
-        if type(count) == int and self.redisdb.hlen(name=self.name_original) > count:
+        if type(count) == int and len(ips) > count:
             return sample(ips, count)
         else:
             return ips
-    
-    def hash_getall_checked(self, count=None):
+
+    def hash_get_checked(self, count=None):
         ips = []
         for key, value in self.redisdb.hgetall(name=self.name_checked).items():
             ips.append(json.loads(key))
-        if type(count) == int and self.redisdb.hlen(name=self.name_checked) > count:
-            return sample(ips, count)
-        else:
-            return ips
-
-    def hash_gethttp_checked(self, count=None):
-        ips = []
-        for key, value in self.redisdb.hgetall(name=self.name_checked).items():
-            if value == 'http':
-                ips.append(json.loads(key))
-        if type(count) == int and self.redisdb.hlen(name=self.name_checked) > count:
-            return sample(ips, count)
-        else:
-            return ips
-
-    def hash_gethttps_checked(self, count=None):
-        ips = []
-        for key, value in self.redisdb.hgetall(name=self.name_checked).items():
-            if value == 'https':
-                ips.append(json.loads(key))
-        if type(count) == int and self.redisdb.hlen(name=self.name_checked) > count:
+        if type(count) == int and len(ips) > count:
             return sample(ips, count)
         else:
             return ips

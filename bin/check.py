@@ -18,7 +18,7 @@ class Check():
     
     def __init__(self):
         self.redis = redis.RedisConnect()
-        self.checking_url = setting.CHECKING_URL
+        self.url = setting.CHECKING_URL
         self.headers = setting.CHECKING_HEADERS
         self.sample = setting.SAMPLE
         self.timeout = setting.TIMEOUT
@@ -31,8 +31,8 @@ class Check():
 
     def check_original(self):
         try:
-            proxys = [proxy for proxy in self.redis.hash_getall_original(count=self.sample)]
-            requests = [grequests.get(url=self.checking_url, headers=self.headers, proxies=proxy, timeout=self.timeout) for proxy in proxys]
+            proxys = [proxy for proxy in self.redis.hash_get_original(count=self.sample)]
+            requests = [grequests.get(url=self.url, headers=self.headers, proxies=proxy, timeout=self.timeout) for proxy in proxys]
             responses = grequests.map(requests)
             for item in zip(proxys, responses):
                 proxy, response = item[0], item[1]
@@ -48,8 +48,8 @@ class Check():
     
     def check_checked(self):
         try:
-            proxys = [proxy for proxy in self.redis.hash_getall_checked(count=self.sample)]
-            requests = [grequests.get(url=self.checking_url, headers=self.headers, proxies=proxy, timeout=self.timeout) for proxy in proxys]
+            proxys = [proxy for proxy in self.redis.hash_get_checked(count=self.sample)]
+            requests = [grequests.get(url=self.url, headers=self.headers, proxies=proxy, timeout=self.timeout) for proxy in proxys]
             responses = grequests.map(requests)
             for item in zip(proxys, responses):
                 proxy, response = item[0], item[1]
@@ -64,13 +64,15 @@ class Check():
 
 c = Check()
 while True:
-    if c.count_original() < 1:
+    if c.count_original() < 1 and c.check_checked < 1:
         time.sleep(setting.TIME_CHECK)
-    elif c.count_checked() < setting.PROXY_MIN:
+    elif c.count_original() >= 1 or c.count_checked() < setting.PROXY_MIN:
         c.check_original()
         time.sleep(setting.TIME_CHECK)
-    elif c.count_checked() > setting.PROXY_MIN:
-        c.check_original()
+    else:
         c.check_checked()
+        c.check_original()
         time.sleep(setting.TIME_CHECK * 10)
+        
+        
 
