@@ -20,7 +20,7 @@ api = FastAPI()
 @api.get('/getALL')
 def get_all():
     try:
-        result = redis.hash_getall_checked()
+        result = redis.hash_get_checked()
         return {
             'success': 1,
             'data': result
@@ -32,25 +32,10 @@ def get_all():
         }
 
 
-@api.get('/getHTTP')
-def get_http():
+@api.get('/getCOUNT')
+def get_count():
     try:
-        result = redis.hash_gethttp_checked()
-        return {
-            'success': 1,
-            'data': result
-        }
-    except Exception:
-        return {
-            'success': 0,
-            'data': traceback.format_exc()
-        }
-
-
-@api.get('/getHTTPS')
-def get_https():
-    try:
-        result = redis.hash_gethttps_checked()
+        result = redis.hash_count_checked()
         return {
             'success': 1,
             'data': result
