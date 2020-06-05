@@ -38,7 +38,7 @@ class Check():
                 proxy, response = item[0], item[1]
                 try:
                     if response.status_code == 200:
-                        self.redis.hash_set_checked(proxy, list(proxy.keys())[0])
+                        self.redis.hash_set_checked(proxy, response.elapsed.total_seconds())
                 except Exception:
                     pass
                 self.redis.hash_del_original(proxy)
@@ -72,7 +72,7 @@ while True:
     else:
         c.check_checked()
         c.check_original()
-        time.sleep(setting.TIME_CHECK * 10)
+        time.sleep(setting.TIME_CHECK * 20)
         
         
 
