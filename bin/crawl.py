@@ -27,7 +27,7 @@ class Crawl():
         self.__89ip()
         self.__kuaidaili()
         self.__xiladaili()
-        # self.__xicidaili()
+        self.__xicidaili()
 
     def __setter(self, ips, website):
         try:
