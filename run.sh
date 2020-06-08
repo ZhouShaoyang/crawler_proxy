@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ROOT=$(cd "$(dirname "$0")";pwd)
-PYTHON="${ROOT}/Venv/bin/python"
+PYTHON="${ROOT}/venv/bin/python"
 CRAWL="${ROOT}/bin/crawl.py"
 CHECK="${ROOT}/bin/check.py"
 API="${ROOT}/bin/api.py"
