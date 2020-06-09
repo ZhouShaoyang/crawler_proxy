@@ -72,7 +72,4 @@ while True:
     else:
         c.check_checked()
         c.check_original()
-        time.sleep(setting.TIME_CHECK * 20)
-        
-        
-
+        time.sleep(setting.TIME_CHECK * 10)

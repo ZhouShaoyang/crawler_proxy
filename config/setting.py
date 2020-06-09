@@ -22,12 +22,12 @@ SLEEP = 3
 CHECKING_URL = 'https://www.baidu.com'
 CHECKING_HEADERS = {'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36 Edg/83.0.478.37'}
 SAMPLE = 500
-TIMEOUT = 10
+TIMEOUT = 5
 
 # SCHEDULE SETTING
 PROXY_MIN = 500
-TIME_CHECK = 60
-TIME_CRAWL = 28800
+TIME_CHECK = 180
+TIME_CRAWL = 14400
 
 # LOGGING SETTING
 LOG_FORMAT = '%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s'
